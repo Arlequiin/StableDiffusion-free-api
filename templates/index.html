@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flask Selenium Web App</title>
+</head>
+<body>
+  <iframe src="https://arltools.xyz/programmation@badr/free_apis#page" width="90%" height="400px" style="border-radius:1rem;"></iframe>
+    <h1>Interactive demo</h1>
+    <form id="myForm">
+        <input type="text" id="promptInput" autocomplete="off" placeholder="Enter Prompt" required>
+        <button type="submit">Generate</button>
+    </form>
+<style>
+  img {
+    max-width:100%;
+    max-height:auto;
+  }
+</style>
+    <div id="imageContainer"></div>
+<a id="pls"></a>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#myForm').submit(function(event) {
+                event.preventDefault();
+                document.getElementById("pls").textContent="Please wait... Image is generating... This will take a few seconds...";
+                var promptValue = $('#promptInput').val();
+                $.ajax({
+                    url: 'https://images.arlequiin.repl.co/',
+                    type: 'POST',
+                    data: { prompt: promptValue },
+                    success: function(response) {
+                        var imageSources = response;
+
+                        // Display the images
+                        var imageContainer = $('#imageContainer');
+                        imageContainer.empty();
+                        for (var i = 0; i < imageSources.length; i++) {
+                            var img = $('<img>').attr('src', imageSources[i]);
+                            imageContainer.append(img);
+                        }
+                    },
+                    error: function(error) {
+                        console.log('Error:', error);
+                    }
+                });
+              document.getElementById("pls").textContent="";
+            });
+        });
+    </script>
+</body>
+</html>
